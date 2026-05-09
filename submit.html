@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提交题目 - 篮球性格测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .option-row {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .option-row h4 {
+            margin-bottom: 12px;
+            color: #e94560;
+        }
+        .scores-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .score-item {
+            flex: 1;
+            min-width: 60px;
+        }
+        .score-item label {
+            font-size: 0.7rem;
+            font-weight: normal;
+        }
+        .score-item input {
+            padding: 8px;
+            text-align: center;
+        }
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e94560, #ff6b8a);
+            color: white;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+            margin-top: 12px;
+        }
+        .add-option-btn {
+            background: #e0e0e0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .output-area {
+            margin-top: 24px;
+            padding: 16px;
+            background: #1a1a2e;
+            border-radius: 16px;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            margin-top: 12px;
+            background: #333;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .help-text {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 4px;
+        }
+        .source-info {
+            background: #e8f4fd;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: #0066cc;
+            text-align: center;
+        }
+        .source-preview {
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 8px;
+        }
+        .source-preview span {
+            color: #e94560;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>📝 提交篮球性格题目</h1>
+            <div class="subtitle">填写题目信息，生成JSON后提交给管理员</div>
+            
+            <div class="source-info">
+                💡 你的来源ID将显示在题目的 "sources" 字段中，用于标识题目贡献者
+            </div>
+            
+            <form id="questionForm">
+                <div class="form-group">
+                    <label>🆔 你的来源ID <span style="color:red">*</span></label>
+                    <input type="text" id="sourceId" placeholder="例如：篮球爱好者张三 / 虎扑用户123 / 你的昵称" required>
+                    <div class="help-text">这个ID会显示在题目标签上，让别人知道这道题是你贡献的</div>
+                    <div class="source-preview" id="sourcePreview">
+                        📊 题目来源：<span id="previewSource">你的来源ID</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>📖 题目文字 <span style="color:red">*</span></label>
+                    <textarea id="questionText" placeholder="例如：比赛最后30秒，球队落后2分，你会..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>📋 选项列表 <span style="color:red">*</span></label>
+                    <div id="optionsContainer"></div>
+                    <button type="button" class="add-option-btn" id="addOptionBtn">+ 添加选项</button>
+                </div>
+            </form>
+            
+            <button class="btn-primary" id="generateBtn">✅ 生成JSON并下载</button>
+            <button class="btn-secondary" id="clearBtn">🗑️ 清空表单</button>
+            
+            <div class="help-text" style="margin-top: 20px; text-align: center;">
+                💡 生成JSON后下载文件，发送给管理员即可加入题库
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 维度列表
+        const DIMENSIONS = {
+            "攻防倾向": { left: "O", right: "D", leftName: "进攻型", rightName: "防守型" },
+            "影响方式": { left: "H", right: "N", leftName: "持球型", rightName: "无球型" },
+            "行为决策": { left: "C", right: "T", leftName: "核心型", rightName: "团队型" },
+            "球场性格": { left: "P", right: "Q", leftName: "激情型", rightName: "冷静型" }
+        };
+        
+        let optionCount = 2;
+        
+        // 实时更新来源预览
+        function updateSourcePreview() {
+            const sourceId = document.getElementById('sourceId').value.trim();
+            const previewSpan = document.getElementById('previewSource');
+            if (sourceId) {
+                previewSpan.textContent = sourceId;
+                previewSpan.style.color = "#e94560";
+            } else {
+                previewSpan.textContent = "你的来源ID";
+                previewSpan.style.color = "#999";
+            }
+        }
+        
+        function renderOptions() {
+            const container = document.getElementById('optionsContainer');
+            let html = '';
+            for (let i = 0; i < optionCount; i++) {
+                html += `
+                    <div class="option-row" data-opt-index="${i}">
+                        <h4>选项 ${String.fromCharCode(65 + i)}</h4>
+                        <div class="form-group">
+                            <label>选项文字</label>
+                            <input type="text" class="opt-text" placeholder="例如：要球单打，自己来解决比赛" required>
+                        </div>
+                        <div class="scores-row">
+                            <div class="score-item">
+                                <label>⚔️ 进攻型(O)</label>
+                                <input type="number" class="score-O" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>🛡️ 防守型(D)</label>
+                                <input type="number" class="score-D" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>🏀 持球型(H)</label>
+                                <input type="number" class="score-H" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>🏃 无球型(N)</label>
+                                <input type="number" class="score-N" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>👑 核心型(C)</label>
+                                <input type="number" class="score-C" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>🤝 团队型(T)</label>
+                                <input type="number" class="score-T" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>🔥 激情型(P)</label>
+                                <input type="number" class="score-P" min="0" max="3" value="0" step="1">
+                            </div>
+                            <div class="score-item">
+                                <label>❄️ 冷静型(Q)</label>
+                                <input type="number" class="score-Q" min="0" max="3" value="0" step="1">
+                            </div>
+                        </div>
+                        ${i >= 2 ? `<button type="button" class="remove-option-btn" style="margin-top: 10px; background: #ffccc7; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer;" data-index="${i}">删除选项</button>` : ''}
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+            
+            document.querySelectorAll('.remove-option-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.index);
+                    if (optionCount > 2) {
+                        optionCount--;
+                        renderOptions();
+                    }
+                });
+            });
+        }
+        
+        function collectQuestionData() {
+            const text = document.getElementById('questionText').value.trim();
+            const sourceId = document.getElementById('sourceId').value.trim();
+            
+            if (!text) {
+                alert('请输入题目文字');
+                return null;
+            }
+            if (!sourceId) {
+                alert('请输入你的来源ID（昵称）');
+                return null;
+            }
+            
+            const options = [];
+            const optionRows = document.querySelectorAll('.option-row');
+            for (let i = 0; i < optionRows.length; i++) {
+                const row = optionRows[i];
+                const optText = row.querySelector('.opt-text').value.trim();
+                if (!optText) {
+                    alert(`请填写选项 ${String.fromCharCode(65 + i)} 的文字`);
+                    return null;
+                }
+                
+                const scores = {};
+                for (let dimType in DIMENSIONS) {
+                    const dim = DIMENSIONS[dimType];
+                    const leftVal = parseInt(row.querySelector(`.score-${dim.left}`).value) || 0;
+                    const rightVal = parseInt(row.querySelector(`.score-${dim.right}`).value) || 0;
+                    if (leftVal > 0) scores[dim.left] = leftVal;
+                    if (rightVal > 0) scores[dim.right] = rightVal;
+                }
+                
+                if (Object.keys(scores).length === 0) {
+                    alert(`选项 ${String.fromCharCode(65 + i)} 至少要在某个维度上分配分数`);
+                    return null;
+                }
+                
+                options.push({ text: optText, scores: scores });
+            }
+            
+            if (options.length < 2) {
+                alert('请至少添加2个选项');
+                return null;
+            }
+            
+            return {
+                id: "user_" + Date.now(),
+                text: text,
+                sources: [sourceId],  // 使用用户自定义的来源ID
+                options: options
+            };
+        }
+        
+        function downloadJSON() {
+            const questionData = collectQuestionData();
+            if (!questionData) return;
+            
+            const jsonStr = JSON.stringify(questionData, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `question_${questionData.sources[0]}_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`✅ JSON文件已下载，来源ID：${questionData.sources[0]}\n请发送给管理员审核`);
+        }
+        
+        function clearForm() {
+            document.getElementById('questionText').value = '';
+            document.getElementById('sourceId').value = '';
+            optionCount = 2;
+            renderOptions();
+            updateSourcePreview();
+        }
+        
+        // 初始化
+        renderOptions();
+        
+        // 绑定事件
+        document.getElementById('addOptionBtn').addEventListener('click', () => {
+            if (optionCount < 6) {
+                optionCount++;
+                renderOptions();
+            } else {
+                alert('最多6个选项');
+            }
+        });
+        document.getElementById('generateBtn').addEventListener('click', downloadJSON);
+        document.getElementById('clearBtn').addEventListener('click', clearForm);
+        document.getElementById('sourceId').addEventListener('input', updateSourcePreview);
+        
+        // 初始化预览
+        updateSourcePreview();
+    </script>
+</body>
+</html>

@@ -257,8 +257,8 @@
             box-shadow: 0 5px 15px rgba(233,69,96,0.3);
         }
         .btn-secondary {
-            background: #e0e0e0;
-            color: #333;
+            background: #3506ce;
+            color: #fffcfc;
         }
         .btn-secondary:hover {
             background: #ccc;
@@ -491,6 +491,7 @@
                     <div class="btn-group">
                         <button class="btn-secondary" id="restartBtn">重新测试</button>
                         <button class="btn-primary" id="shareBtn">📋 分享结果</button>
+                        <button class="btn-secondary" id="submitQuestionBtn">贡献题目</button>
                     </div>
                 </div>
                 <a href="index.html" class="back-link">← 返回首页</a>
@@ -502,10 +503,12 @@
             document.getElementById('restartBtn').addEventListener('click', () => {
                 window.location.href = 'v3_start.html';
             });
-            
+            document.getElementById('submitQuestionBtn').addEventListener('click', () => {
+                window.location.href = 'submit.html';
+            });
             // 绑定分享按钮
             document.getElementById('shareBtn').addEventListener('click', () => {
-                const shareText = `🏀 我的篮球性格是 ${fourCode} · ${typeName}！快来测测你的类型：${window.location.origin}${window.location.pathname.replace('result.html', 'index.html')}`;
+                const shareText = `🏀 我的篮球性格是 ${fourCode} · ${typeName}！快来测测你的类型：https://astralisglave.github.io/basketballmbti_test/`;
                 navigator.clipboard.writeText(shareText).then(() => {
                     alert('✅ 结果已复制，可以分享给朋友了！');
                 }).catch(() => {
