@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>篮球性格测试 - 结果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 结果卡片 */
+        .result-card {
+            background: white;
+            border-radius: 40px;
+            padding: 32px 28px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 篮球图标 */
+        .basketball-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #45d3e9, #eddade);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(233,69,96,0.3);
+        }
+        .basketball-icon span {
+            font-size: 38px;
+        }
+
+        /* 结果代码 */
+        .result-code {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            background: linear-gradient(135deg, #008cfe, #02084b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .result-type {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .result-desc {
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 维度分数条 */
+        .dimension-section {
+            margin-bottom: 24px;
+        }
+        .dimension-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dimension-title .dim-icon {
+            font-size: 1rem;
+        }
+        .dimension-bar-container {
+            display: flex;
+            gap: 2px;
+            height: 36px;
+            background: #f0f0f0;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .dimension-bar-left {
+            background: linear-gradient(135deg, #e9025e, #ce7e85);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .dimension-bar-right {
+            background: linear-gradient(135deg, #356cc5, #499bca);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 10px;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .dimension-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+        }
+        .dimension-labels .left-label {
+            color: #e94560;
+            font-weight: 500;
+        }
+        .dimension-labels .right-label {
+            color: #2ecc71;
+            font-weight: 500;
+        }
+        .dimension-scores {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        /* 球星推荐 */
+        .stars-section {
+            background: #f8f9fa;
+            border-radius: 24px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        .stars-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .star-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .star-item {
+            background: white;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #45a7e9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* 建议 */
+        .advice-section {
+            background: #fff3e0;
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 24px;
+        }
+        .advice-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #e67e22;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .advice-text {
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* 特质标签 */
+        .traits-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+        .trait-tag {
+            background: #f0f0f0;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            color: #555;
+        }
+        .trait-tag strong {
+            color: #e94560;
+        }
+
+        /* 按钮 */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e94560, #ff6b8a);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #ccc;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: white;
+        }
+
+        /* 错误提示 */
+        .error-card {
+            background: white;
+            border-radius: 40px;
+            padding: 40px 28px;
+            text-align: center;
+        }
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        .error-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #e94560;
+            margin-bottom: 12px;
+        }
+        .error-text {
+            color: #666;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app"></div>
+
+    <script>
+        // ============================================================
+        // 维度配置
+        // 四个维度：攻防倾向、影响方式、行为决策、球场性格
+        // ============================================================
+        const DIMENSIONS = [
+            { left: "O", right: "D", leftName: "进攻型", rightName: "防守型", icon: "⚔️", description: "用得分影响比赛 vs 用防守影响比赛" },
+            { left: "H", right: "N", leftName: "持球型", rightName: "无球型", icon: "🏀", description: "球权在手创造机会 vs 无球跑动创造机会" },
+            { left: "C", right: "T", leftName: "核心型", rightName: "团队型", icon: "👑", description: "关键时刻接管比赛 vs 融入体系发挥作用" },
+            { left: "P", right: "Q", leftName: "激情型", rightName: "冷静型", icon: "🔥", description: "情绪带动发挥 vs 理性支配行动" }
+        ];
+
+        // 维度完整名称映射
+        const DIM_FULL_NAME = {
+            O: "进攻型", D: "防守型",
+            H: "持球型", N: "无球型",
+            C: "核心型", T: "团队型",
+            P: "激情型", Q: "冷静型"
+        };
+
+        // 维度图标映射
+        const DIM_ICON = {
+            O: "⚔️", D: "🛡️",
+            H: "🏀", N: "🏃",
+            C: "👑", T: "🤝",
+            P: "🔥", Q: "❄️"
+        };
+
+        // ============================================================
+        // 16种类型对照表（四码组合）
+        // 格式：四码 → { name, stars, traits, advice }
+        // ============================================================
+        const TYPE_MAP = {
+            // ===== 进攻型(O) + 持球型(H) =====
+            "OHCP": { name: "孤胆英雄", stars: ["Allen Iverson", "Kobe Bryant", "Russell Westbrook"], traits: ["得分第一", "关键时刻敢出手", "情绪化"], advice: "你是天生的得分手，但要注意控制失误，适当相信队友。建议加强防守专注度，成为真正的攻防一体。" },
+            "OHCQ": { name: "冷血刺客", stars: ["Kawhi Leonard", "Damian Lillard", "Paul George"], traits: ["冷静得分", "关键球可靠", "不张扬"], advice: "你是最可怕的杀手，冷静且高效。建议偶尔释放情绪带动队友，增加团队沟通。" },
+            "OHTP": { name: "节奏发动机", stars: ["Stephen Curry", "James Harden", "Steve Nash"], traits: ["持球组织", "带动全队", "有激情"], advice: "你是球队的引擎，能带动全队节奏。建议平衡个人进攻和组织，关键时刻要更果断。" },
+            "OHTQ": { name: "冷静指挥官", stars: ["Chris Paul", "Mike Conley", "Jrue Holiday"], traits: ["控场大师", "理性决策", "稳定输出"], advice: "你是场上的大脑，冷静且合理。建议在球队需要时增加个人攻击，不要过于无私。" },
+            
+            // ===== 进攻型(O) + 无球型(N) =====
+            "ONCP": { name: "飞天遁地者", stars: ["Zion Williamson", "Ja Morant", "Blake Griffin"], traits: ["暴力切入", "激情四射", "无球跑动"], advice: "你的爆发力惊人，无球切入是杀手锏。建议增加持球进攻技能，让防守更难预判。" },
+            "ONCQ": { name: "精准射手", stars: ["Klay Thompson", "Ray Allen", "Reggie Miller"], traits: ["跑位精准", "出手果断", "冷静高效"], advice: "你是完美的终结者，无球跑动顶级。建议增加持球创造机会的能力，丰富进攻手段。" },
+            "ONTP": { name: "团队催化剂", stars: ["Draymond Green", "Andre Iguodala", "Boris Diaw"], traits: ["全能辅助", "激情传导", "任劳任怨"], advice: "你是团队的粘合剂，激情感染全队。建议提升个人攻击威胁，让防守不敢放空你。" },
+            "ONTQ": { name: "冷静拼图", stars: ["Shane Battier", "Danny Green", "Robert Covington"], traits: ["角色球员", "执行力强", "不占球权"], advice: "你是完美的拼图型球员，冷静且可靠。建议在空位时更果断出手，相信自己的投射。" },
+            
+            // ===== 防守型(D) + 持球型(H) =====
+            "DHCP": { name: "防守尖刀", stars: ["Patrick Beverley", "Marcus Smart", "Tony Allen"], traits: ["撕咬防守", "情绪带动", "持球施压"], advice: "你的防守让对手窒息，激情是武器。建议控制犯规，同时提升进攻威胁。" },
+            "DHCQ": { name: "防守指挥官", stars: ["Gary Payton", "Jason Kidd", "Lonzo Ball"], traits: ["防守组织", "冷静预判", "持球策动"], advice: "你是防守端的大脑，冷静且聪明。建议增加个人得分侵略性，让对手不敢放你。" },
+            "DHTP": { name: "全能战士", stars: ["Michael Jordan", "LeBron James", "Kawhi Leonard"], traits: ["攻防一体", "持球核心", "激情领导"], advice: "你是攻防一体的全能战士，极其稀有。建议保持健康，合理分配体力。" },
+            "DHTQ": { name: "体系基石", stars: ["Tim Duncan", "Al Horford", "Marc Gasol"], traits: ["防守支柱", "冷静判断", "策应能力"], advice: "你是防守体系的基石，冷静且稳定。建议在进攻端更主动，承担更多责任。" },
+            
+            // ===== 防守型(D) + 无球型(N) =====
+            "DNCP": { name: "激情蓝领", stars: ["Dennis Rodman", "Ben Wallace", "Kenneth Faried"], traits: ["篮板狂人", "激情四射", "能量满满"], advice: "你的能量是无价的，激情带动全队。建议提升进攻技巧，让对手不敢放空。" },
+            "DNCQ": { name: "防守专家", stars: ["Rudy Gobert", "Brook Lopez", "Myles Turner"], traits: ["护框高手", "冷静站位", "协防意识"], advice: "你是禁区的守护神，冷静且聪明。建议增加进攻端的参与度，开发三分投射。" },
+            "DNTP": { name: "团队工兵", stars: ["PJ Tucker", "Jae Crowder", "Trevor Ariza"], traits: ["脏活累活", "激情拼搏", "团队优先"], advice: "你是每个球队都想要的拼图，任劳任怨。建议开发一招鲜的进攻技能，提升价值。" },
+            "DNTQ": { name: "隐形守护者", stars: ["Shane Battier", "Tayshaun Prince", "Andre Roberson"], traits: ["低调防守", "冷静补位", "不抢风头"], advice: "你是球队的隐形守护者，数据无法体现你的价值。建议在进攻端更自信，把握空位机会。" }
+        };
+
+        // 默认类型（当匹配不到时使用）
+        const DEFAULT_TYPE = { 
+            name: "全能型球员", 
+            stars: ["LeBron James", "Stephen Curry", "Kevin Durant"], 
+            traits: ["全面均衡", "适应力强", "持续进步"],
+            advice: "你的打法非常均衡，没有明显短板。建议找到自己最擅长的维度并强化，成为更独特的球员。"
+        };
+
+        // ============================================================
+        // 工具函数
+        // ============================================================
+        
+        // 根据四码获取类型信息
+        function getTypeInfo(fourCode) {
+            return TYPE_MAP[fourCode] || DEFAULT_TYPE;
+        }
+
+        // 根据四码获取建议文字（备用）
+        function getAdviceByCode(fourCode) {
+            const typeInfo = getTypeInfo(fourCode);
+            return typeInfo.advice;
+        }
+
+        // 获取特质标签HTML
+        function getTraitsHtml(traits) {
+            if (!traits || traits.length === 0) return '';
+            let html = '';
+            for (let trait of traits) {
+                html += `<div class="trait-tag">🏷️ ${trait}</div>`;
+            }
+            return html;
+        }
+
+        // ============================================================
+        // 渲染主函数
+        // ============================================================
+        function renderResultPage(resultData) {
+            const fourCode = resultData.code;      // 如 "OHCP"
+            const scores = resultData.scores;      // { O, D, H, N, C, T, P, Q }
+            const dimensions = resultData.dimensions;  // 各维度原始分数
+            
+            // 获取类型信息
+            const typeInfo = getTypeInfo(fourCode);
+            const typeName = typeInfo.name;
+            const stars = typeInfo.stars;
+            const traits = typeInfo.traits;
+            const advice = typeInfo.advice;
+            
+            // 生成维度HTML（使用传入的dimensions数据）
+            let dimensionsHtml = '';
+            for (let i = 0; i < dimensions.length; i++) {
+                const dim = dimensions[i];
+                const leftScore = dim.leftScore;
+                const rightScore = dim.rightScore;
+                const total = leftScore + rightScore;
+                const leftPercent = total > 0 ? (leftScore / total * 100) : 50;
+                const rightPercent = total > 0 ? (rightScore / total * 100) : 50;
+                
+                dimensionsHtml += `
+                    <div class="dimension-section">
+                        <div class="dimension-title">
+                            <span class="dim-icon">${DIM_ICON[dim.left] || '🏀'}</span> 
+                            ${dim.leftName} vs ${dim.rightName}
+                            <span style="font-size: 0.65rem; color: #999; margin-left: auto;">${dim.description || ''}</span>
+                        </div>
+                        <div class="dimension-bar-container">
+                            <div class="dimension-bar-left" style="width: ${leftPercent}%;">
+                                ${leftScore > 0 && leftPercent > 18 ? leftScore : ''}
+                            </div>
+                            <div class="dimension-bar-right" style="width: ${rightPercent}%;">
+                                ${rightScore > 0 && rightPercent > 18 ? rightScore : ''}
+                            </div>
+                        </div>
+                        <div class="dimension-labels">
+                            <span class="left-label">${dim.leftName}</span>
+                            <span class="right-label">${dim.rightName}</span>
+                        </div>
+                        <div class="dimension-scores">
+                            <span>${leftScore}分</span>
+                            <span>${rightScore}分</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 生成球星列表HTML
+            let starsHtml = '';
+            for (let star of stars) {
+                starsHtml += `<div class="star-item">✨ ${star}</div>`;
+            }
+            
+            // 生成特质标签HTML
+            const traitsHtml = getTraitsHtml(traits);
+            
+            const html = `
+                <div class="result-card">
+                    <div class="basketball-icon">
+                        <span>🏀</span>
+                    </div>
+                    
+                    <div class="result-code">${fourCode}</div>
+                    <div class="result-type">${typeName}</div>
+                    <div class="result-desc">基于4维度篮球性格模型 · 多维情景测评</div>
+                    
+                    ${dimensionsHtml}
+                    
+                    <div class="traits-section">
+                        ${traitsHtml}
+                    </div>
+                    
+                    <div class="stars-section">
+                        <div class="stars-title">
+                            <span>🤵‍♂️</span> 相似打法球星
+                        </div>
+                        <div class="star-list">
+                            ${starsHtml}
+                        </div>
+                    </div>
+                    
+                    <div class="advice-section">
+                        <div class="advice-title">
+                            <span>💡</span> 发展建议
+                        </div>
+                        <div class="advice-text">
+                            ${advice}
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn-secondary" id="restartBtn">重新测试</button>
+                        <button class="btn-primary" id="shareBtn">📋 分享结果</button>
+                    </div>
+                </div>
+                <a href="index.html" class="back-link">← 返回首页</a>
+            `;
+            
+            document.getElementById('app').innerHTML = html;
+            
+            // 绑定重新测试按钮
+            document.getElementById('restartBtn').addEventListener('click', () => {
+                window.location.href = 'v3_start.html';
+            });
+            
+            // 绑定分享按钮
+            document.getElementById('shareBtn').addEventListener('click', () => {
+                const shareText = `🏀 我的篮球性格是 ${fourCode} · ${typeName}！快来测测你的类型：${window.location.origin}${window.location.pathname.replace('result.html', 'index.html')}`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('✅ 结果已复制，可以分享给朋友了！');
+                }).catch(() => {
+                    alert('复制失败，请手动复制');
+                });
+            });
+        }
+        
+        // 显示错误页面（当没有测试数据时）
+        function renderErrorPage() {
+            const html = `
+                <div class="error-card">
+                    <div class="error-icon">😅</div>
+                    <div class="error-title">暂无测试结果</div>
+                    <div class="error-text">
+                        请先完成测试，再来查看结果。
+                    </div>
+                    <button class="btn-primary" id="goTestBtn">开始测试 →</button>
+                </div>
+            `;
+            document.getElementById('app').innerHTML = html;
+            document.getElementById('goTestBtn').addEventListener('click', () => {
+                window.location.href = 'test.html';
+            });
+        }
+        
+        // 读取测试结果并渲染
+        function init() {
+            const storedResult = localStorage.getItem('basketballTestResult');
+            
+            if (storedResult) {
+                try {
+                    const resultData = JSON.parse(storedResult);
+                    renderResultPage(resultData);
+                } catch (e) {
+                    console.error('解析数据失败', e);
+                    renderErrorPage();
+                }
+            } else {
+                renderErrorPage();
+            }
+        }
+        
+        // 启动
+        init();
+    </script>
+</body>
+</html>
