@@ -370,6 +370,14 @@
                 } else {
                     throw new Error('格式错误');
                 }
+                // 限制最多20题
+                if (allQuestions.length > 20) {
+                    QUESTIONS = allQuestions.slice(0, 20);
+                    console.log(`✅ 题库共 ${allQuestions.length} 题，已限制为前 ${QUESTIONS.length} 题`);
+                } else {
+                    QUESTIONS = allQuestions;
+                    console.log(`✅ 加载成功，共 ${QUESTIONS.length} 题`);
+                }
                 showTestInterface();
             })
             .catch(err => {
