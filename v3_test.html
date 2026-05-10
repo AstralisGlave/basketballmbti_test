@@ -395,7 +395,7 @@
                     QUESTIONS = getRandomQuestions(allQUESTIONS, QUESTIONS_PER_TEST);
                     console.log(`🎲 随机抽取 ${QUESTIONS.length} 题（共${QUESTIONS_PER_TEST}题）`);
                 } else {
-                    QUESTIONS = allQuestions;
+                    QUESTIONS = allQUESTIONS;
                     console.log(`⚠️ 题库不足${QUESTIONS_PER_TEST}题，使用全部 ${QUESTIONS.length} 题`);
                 }
                 
