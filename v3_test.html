@@ -201,7 +201,7 @@
 
     <script>
         // 全局变量
-        let allQUESTIONS = [];
+        let QUESTIONS = [];
         let currentIndex = 0;
         let answers = [];
         let scores = { O: 0, D: 0, H: 0, N: 0, C: 0, T: 0, P: 0, Q: 0 };
@@ -392,7 +392,7 @@
                 console.log(`📚 题库共 ${allQuestions.length} 题`);
                 // 随机抽取15题
                 if (allQuestions.length > QUESTIONS_PER_TEST) {
-                    QUESTIONS = getRandomQuestions(allQuestions, QUESTIONS_PER_TEST);
+                    QUESTIONS = getRandomQuestions(allQUESTIONS, QUESTIONS_PER_TEST);
                     console.log(`🎲 随机抽取 ${QUESTIONS.length} 题（共${QUESTIONS_PER_TEST}题）`);
                 } else {
                     QUESTIONS = allQuestions;
