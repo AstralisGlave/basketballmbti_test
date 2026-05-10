@@ -391,7 +391,7 @@
 
                 console.log(`📚 题库共 ${allQuestions.length} 题`);
                 // 随机抽取15题
-                if (allQuestions.length > QUESTIONS_PER_TEST) {
+                if (allQUESTIONS.length > QUESTIONS_PER_TEST) {
                     QUESTIONS = getRandomQuestions(allQUESTIONS, QUESTIONS_PER_TEST);
                     console.log(`🎲 随机抽取 ${QUESTIONS.length} 题（共${QUESTIONS_PER_TEST}题）`);
                 } else {
