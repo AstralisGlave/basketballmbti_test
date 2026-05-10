@@ -146,6 +146,26 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(233,69,96,0.4);
         }
+        /* 跳转按钮 */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #058fda, #05a0d9);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233,69,96,0.4);
+        }
 
         /* 底部说明 */
         .footer-note {
@@ -202,6 +222,9 @@
             <!-- 开始按钮 -->
             <button class="start-btn" id="startBtn">开始测试 →</button>
             
+            <!-- 开始按钮 -->
+            <button class="submit-btn" id="submitBtn">贡献题目 →</button>
+
             <!-- 底部说明 -->
             <div class="footer-note">
                 作者：维林诺不写议论文
@@ -213,7 +236,12 @@
         // 开始按钮点击事件
         document.getElementById('startBtn').addEventListener('click', function() {
             // 这里可以跳转到测试界面
-            window.location.href = 'v3_test.html';
+            window.location.href = 'v3_test_副本.html';
+        });
+        // 提交按钮点击事件
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            // 这里可以跳转到测试界面
+            window.location.href = 'submit.html';
         });
     </script>
     
