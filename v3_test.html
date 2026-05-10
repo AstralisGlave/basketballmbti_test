@@ -205,6 +205,9 @@
         let currentIndex = 0;
         let answers = [];
         let scores = { O: 0, D: 0, H: 0, N: 0, C: 0, T: 0, P: 0, Q: 0 };
+        
+
+        const QUESTIONS_PER_TEST = 15;// 每次测试随机抽取15题
 
         const DIM_NAMES_FULL = {
             O: "进攻型", D: "防守型",
@@ -215,6 +218,21 @@
 
         // DOM 元素
         let progressFill, progressText, dimensionTag, questionText, multiDimHint, optionsContainer, prevBtn, nextBtn;
+
+        // ============================================================
+        // 随机抽取函数（Fisher-Yates 洗牌算法）
+        // ============================================================
+        function getRandomQuestions(arr, count) {
+            // 复制原数组，避免修改原数据
+            const shuffled = [...arr];
+            // 洗牌算法：随机打乱数组顺序
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            // 返回前 count 个
+            return shuffled.slice(0, Math.min(count, shuffled.length));
+        }
 
         function getDimensionHintText(sources) {
             let html = '📊 题目来源：';
@@ -364,12 +382,27 @@
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
-                    QUESTIONS = data;
+                    allQUESTIONS = data;
                 } else if (data.questions && Array.isArray(data.questions)) {
-                    QUESTIONS = data.questions;
+                    allQUESTIONS = data.questions;
                 } else {
                     throw new Error('格式错误');
                 }
+
+                console.log(`📚 题库共 ${allQuestions.length} 题`);
+                // 随机抽取15题
+                if (allQuestions.length > QUESTIONS_PER_TEST) {
+                    QUESTIONS = getRandomQuestions(allQuestions, QUESTIONS_PER_TEST);
+                    console.log(`🎲 随机抽取 ${QUESTIONS.length} 题（共${QUESTIONS_PER_TEST}题）`);
+                } else {
+                    QUESTIONS = allQuestions;
+                    console.log(`⚠️ 题库不足${QUESTIONS_PER_TEST}题，使用全部 ${QUESTIONS.length} 题`);
+                }
+                
+                if (QUESTIONS.length === 0) {
+                    throw new Error('题库为空');
+                }
+
                 showTestInterface();
             })
             .catch(err => {
